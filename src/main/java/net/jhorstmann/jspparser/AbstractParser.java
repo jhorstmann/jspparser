@@ -384,10 +384,10 @@ public abstract class AbstractParser {
             if (tokenizer.isDirective()) {
                 parseDirective();
             } else if (tokenizer.isDeclaration()) {
-                String content = tokenizer.readScriptlet();
+                String content = tokenizer.readDeclaration();
                 handleDeclaration(content);
             } else if (tokenizer.isExpression()) {
-                String content = tokenizer.readScriptlet();
+                String content = tokenizer.readExpression();
                 handleExpression(content);
             } else if (tokenizer.isScriptlet()) {
                 String content = tokenizer.readScriptlet();
