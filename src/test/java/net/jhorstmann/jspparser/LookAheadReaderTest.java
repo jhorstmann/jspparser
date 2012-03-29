@@ -32,4 +32,24 @@ public class LookAheadReaderTest {
 
     }
 
+    @Test
+    public void testLookingAt() throws IOException {
+        LookAheadReader lr = new LookAheadReader(new StringReader("abcdefghij"), 4);
+        Assert.assertTrue(lr.lookingAt("ab"));
+        Assert.assertTrue(lr.lookingAt("abc"));
+        Assert.assertTrue(lr.lookingAt("abcd"));
+        Assert.assertTrue(lr.lookingAt("abcd", true));
+
+        Assert.assertFalse(lr.lookingAt("abcd"));
+        Assert.assertFalse(lr.lookingAt("efx"));
+        Assert.assertFalse(lr.lookingAt("efxyz"));
+        Assert.assertTrue(lr.lookingAt("efg"));
+        Assert.assertTrue(lr.lookingAt("efg", true));
+        Assert.assertFalse(lr.lookingAt("xyz"));
+        Assert.assertFalse(lr.lookingAt("hijxyz"));
+
+        Assert.assertTrue(lr.lookingAt("hij", true));
+        Assert.assertEquals(-1, lr.la1());
+    }
+
 }
