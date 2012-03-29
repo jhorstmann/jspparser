@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
 
 public abstract class ParentNode extends AttributedNode {
 
@@ -29,26 +27,18 @@ public abstract class ParentNode extends AttributedNode {
         return children;
     }
 
-    protected void handleChildren(ContentHandler handler) throws SAXException {
-        if (children != null) {
-            for (Node node : children) {
-                node.handle(handler);
-            }
-        }
-    }
-
     protected List<Node> normalizeChildren(boolean trimWhitespace) {
         if (children == null || children.isEmpty()) {
             return null;
         } else {
             List<Node> normalizedChildren = new ArrayList<Node>(children.size());
             for (Iterator<Node> i = children.iterator(); i.hasNext();) {
-                Node node = i.next().normalize();
+                Node node = i.next().normalize(trimWhitespace);
                 if (node instanceof TextNode) {
                     TextNode text = (TextNode) node;
                     while (true) {
                         if (i.hasNext()) {
-                            Node next = i.next().normalize();
+                            Node next = i.next().normalize(trimWhitespace);
                             if (next instanceof TextNode) {
                                 text = text.merge((TextNode) next);
                             } else {

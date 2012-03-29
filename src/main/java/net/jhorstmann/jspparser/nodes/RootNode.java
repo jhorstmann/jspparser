@@ -2,11 +2,8 @@ package net.jhorstmann.jspparser.nodes;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import static net.jhorstmann.jspparser.Constants.*;
 
 public class RootNode extends ParentNode {
     private Map<String, String> taglibs;
@@ -43,27 +40,8 @@ public class RootNode extends ParentNode {
         return taglibs;
     }
 
-
-
     @Override
-    public void handle(ContentHandler handler) throws SAXException {
-        handler.startDocument();
-        handler.startPrefixMapping(PREFIX_JSP, NSURI_JSP);
-        if (taglibs != null) {
-            for (Map.Entry<String, String> entry : taglibs.entrySet()) {
-                handler.startPrefixMapping(entry.getKey(), entry.getValue());
-            }
-        }
-        Attributes attrs = convertAttributes(true);
-        handler.startElement(NSURI_JSP, "root", PREFIX_JSP+":root", attrs);
-        handleChildren(handler);
-        handler.endElement(NSURI_JSP, "root", PREFIX_JSP+":root");
-        if (taglibs != null) {
-            for (Map.Entry<String, String> entry : taglibs.entrySet()) {
-                handler.endPrefixMapping(entry.getKey());
-            }
-        }
-        handler.endPrefixMapping(PREFIX_JSP);
-        handler.endDocument();
+    public void accept(NodeVisitor visitor) throws SAXException {
+        visitor.visitRoot(this);
     }
 }

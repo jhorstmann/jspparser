@@ -1,6 +1,5 @@
 package net.jhorstmann.jspparser.nodes;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 public abstract class Node {
@@ -13,5 +12,5 @@ public abstract class Node {
         return this;
     }
 
-    public abstract void handle(ContentHandler handler) throws SAXException;
+    public abstract void accept(NodeVisitor visitor) throws SAXException;
 }

@@ -31,13 +31,13 @@ public abstract class AttributedNode extends Node {
         return attributes;
     }
 
-    protected Attributes convertAttributes(boolean modifyScriptlets) {
+    public Attributes getAttributes(boolean convertScriptExpressions) {
         AttributesImpl attrs = new AttributesImpl();
         if (attributes != null) {
             for (Map.Entry<String, String> entry : attributes.entrySet()) {
                 String name = entry.getKey();
                 String content = entry.getValue();
-                if (modifyScriptlets && content.startsWith("<%=")) {
+                if (convertScriptExpressions && content.startsWith("<%=")) {
                     if (content.endsWith("%>")) {
                         content = content.substring(1, content.length() - 1);
                     } else {
@@ -48,7 +48,6 @@ public abstract class AttributedNode extends Node {
             }
         }
         return attrs;
-
     }
 
     protected Map<String, String> normalizeAttributes() {

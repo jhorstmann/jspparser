@@ -16,6 +16,7 @@ public class CommentNode extends Node {
     }
 
     @Override
-    public void handle(ContentHandler handler) throws SAXException {
+    public void accept(NodeVisitor visitor) throws SAXException {
+        visitor.visitComment(this);
     }
 }

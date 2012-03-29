@@ -45,10 +45,8 @@ public class CustomTagNode extends ParentNode {
     }
 
     @Override
-    public void handle(ContentHandler handler) throws SAXException {
-        Attributes attrs = convertAttributes(true);
-        handler.startElement(namespaceURI, localName, qualifiedName, attrs);
-        handleChildren(handler);
-        handler.endElement(namespaceURI, localName, qualifiedName);
+    public void accept(NodeVisitor visitor) throws SAXException {
+        visitor.visitCustomTag(this);
     }
+    
 }

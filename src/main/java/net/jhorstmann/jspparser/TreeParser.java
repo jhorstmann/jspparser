@@ -5,12 +5,14 @@ import java.util.Map;
 import net.jhorstmann.jspparser.nodes.CommentNode;
 import net.jhorstmann.jspparser.nodes.CustomTagNode;
 import net.jhorstmann.jspparser.nodes.DeclarationNode;
-import net.jhorstmann.jspparser.nodes.DirectiveNode;
 import net.jhorstmann.jspparser.nodes.ExpressionNode;
+import net.jhorstmann.jspparser.nodes.IncludeDirectiveNode;
 import net.jhorstmann.jspparser.nodes.Node;
+import net.jhorstmann.jspparser.nodes.PageDirectiveNode;
 import net.jhorstmann.jspparser.nodes.ParentNode;
 import net.jhorstmann.jspparser.nodes.RootNode;
 import net.jhorstmann.jspparser.nodes.ScriptletNode;
+import net.jhorstmann.jspparser.nodes.TaglibDirectiveNode;
 import net.jhorstmann.jspparser.nodes.TextNode;
 import org.xml.sax.SAXException;
 
@@ -27,6 +29,10 @@ public class TreeParser extends AbstractParser {
 
     public RootNode getRootNode() {
         return root;
+    }
+
+    public RootNode getNormalizedRootNode() {
+        return (RootNode) root.normalize();
     }
 
     Node getFirstChild() {
@@ -59,8 +65,27 @@ public class TreeParser extends AbstractParser {
     }
 
     @Override
-    protected void handleDirective(String name, Map<String, String> attributes) {
-        DirectiveNode directive = new DirectiveNode(name, attributes);
+    protected void handleStartIncludeDirective(Map<String, String> attributes) throws SAXException {
+        IncludeDirectiveNode directive = new IncludeDirectiveNode(attributes);
+
+        topNode().addChildNode(directive);
+        pushNode(directive);
+    }
+
+    @Override
+    protected void handleEndIncludeDirective() throws SAXException {
+        popNode();
+    }
+
+    @Override
+    protected void handlePageDirective(Map<String, String> attributes) throws SAXException {
+        PageDirectiveNode directive = new PageDirectiveNode(attributes);
+        topNode().addChildNode(directive);
+    }
+
+    @Override
+    protected void handleTaglibDirective(Map<String, String> attributes) throws SAXException {
+        TaglibDirectiveNode directive = new TaglibDirectiveNode(attributes);
         topNode().addChildNode(directive);
     }
 

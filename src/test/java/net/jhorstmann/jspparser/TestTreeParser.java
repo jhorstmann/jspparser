@@ -8,26 +8,26 @@ import java.util.List;
 import java.util.Map;
 import junit.framework.Assert;
 import net.jhorstmann.jspparser.nodes.CustomTagNode;
-import net.jhorstmann.jspparser.nodes.DirectiveNode;
 import net.jhorstmann.jspparser.nodes.Node;
+import net.jhorstmann.jspparser.nodes.PageDirectiveNode;
 import net.jhorstmann.jspparser.nodes.RootNode;
+import net.jhorstmann.jspparser.nodes.TaglibDirectiveNode;
 import net.jhorstmann.jspparser.nodes.TextNode;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 public class TestTreeParser {
 
-    private DirectiveNode parseDirective(String content) throws IOException, SAXException {
+    private PageDirectiveNode parsePageDirective(String content) throws IOException, SAXException {
         TreeParser p = new TreeParser();
         p.parse(new StringReader(content));
-        return (DirectiveNode) p.getFirstChild();
+        return (PageDirectiveNode) p.getFirstChild();
     }
 
     @Test
     public void testParseDirective() throws IOException, SAXException {
-        DirectiveNode directive = parseDirective("<%@page pageEncoding='utf-8' %>");
+        PageDirectiveNode directive = parsePageDirective("<%@page pageEncoding='utf-8' %>");
         Assert.assertNotNull(directive);
-        Assert.assertEquals("page", directive.getName());
         Map<String, String> attrs = directive.getAttributes();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
@@ -36,9 +36,8 @@ public class TestTreeParser {
 
     @Test
     public void testParseDirectiveLeadingSpace() throws IOException, SAXException {
-        DirectiveNode directive = parseDirective("<%@ page pageEncoding='utf-8'%>");
+        PageDirectiveNode directive = parsePageDirective("<%@ page pageEncoding='utf-8'%>");
         Assert.assertNotNull(directive);
-        Assert.assertEquals("page", directive.getName());
         Map<String, String> attrs = directive.getAttributes();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
@@ -47,9 +46,8 @@ public class TestTreeParser {
 
     @Test
     public void testParseDirectiveMultipleAttrs() throws IOException, SAXException {
-        DirectiveNode directive = parseDirective("<%@page pageEncoding='utf-8' info=\"Test\" %>");
+        PageDirectiveNode directive = parsePageDirective("<%@page pageEncoding='utf-8' info=\"Test\" %>");
         Assert.assertNotNull(directive);
-        Assert.assertEquals("page", directive.getName());
         Map<String, String> attrs = directive.getAttributes();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(2, attrs.size());
@@ -61,9 +59,8 @@ public class TestTreeParser {
 
     @Test
     public void testImportDirective() throws IOException, SAXException {
-        DirectiveNode directive = parseDirective("<%@page import='a.A;' %>");
+        PageDirectiveNode directive = parsePageDirective("<%@page import='a.A;' %>");
         Assert.assertNotNull(directive);
-        Assert.assertEquals("page", directive.getName());
         Map<String, String> attrs = directive.getAttributes();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
@@ -72,9 +69,8 @@ public class TestTreeParser {
 
     @Test
     public void testImportDirectiveMulti() throws IOException, SAXException {
-        DirectiveNode directive = parseDirective("<%@page import='a.A' import=\"b.B\" %>");
+        PageDirectiveNode directive = parsePageDirective("<%@page import='a.A' import=\"b.B\" %>");
         Assert.assertNotNull(directive);
-        Assert.assertEquals("page", directive.getName());
         Map<String, String> attrs = directive.getAttributes();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
@@ -91,10 +87,10 @@ public class TestTreeParser {
         List<Node> children = root.getChildNodes();
         Assert.assertNotNull(children);
         Assert.assertEquals(3, children.size());
-        DirectiveNode page = (DirectiveNode) children.get(0);
+        PageDirectiveNode page = (PageDirectiveNode) children.get(0);
         TextNode text = (TextNode) children.get(1);
         Assert.assertEquals("\r\n", text.getContent());
-        DirectiveNode taglib = (DirectiveNode) children.get(2);
+        TaglibDirectiveNode taglib = (TaglibDirectiveNode) children.get(2);
         Map<String, String> attrs = taglib.getAttributes();
         Assert.assertEquals(2, attrs.size());
     }

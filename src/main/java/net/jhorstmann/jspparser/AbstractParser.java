@@ -36,7 +36,10 @@ public abstract class AbstractParser {
 
     protected abstract void handleEndTag(String namespaceURI, String localName, String qualifiedName) throws SAXException;
 
-    protected abstract void handleDirective(String name, Map<String, String> attributes) throws SAXException;
+    protected abstract void handlePageDirective(Map<String, String> attributes) throws SAXException;
+    protected abstract void handleTaglibDirective(Map<String, String> attributes) throws SAXException;
+    protected abstract void handleStartIncludeDirective(Map<String, String> attributes) throws SAXException;
+    protected abstract void handleEndIncludeDirective() throws SAXException;
 
     protected abstract void handleTaglib(String prefix, String uri) throws SAXException;
 
@@ -261,8 +264,6 @@ public abstract class AbstractParser {
 
         tokenizer.consume("%>");
 
-        handleDirective(name, attrs);
-
         if ("page".equals(name)) {
             if ("true".equals(attrs.get("isELIgnored"))) {
                 tokenizer.setIsElEnabled(false);
@@ -283,6 +284,8 @@ public abstract class AbstractParser {
             if (declaredCharset != null && charset != null && !declaredCharset.equalsIgnoreCase(charset)) {
                 throw new SyntaxException("Charset declaration does not match, page declared charset " + declaredCharset + " but was opened with " + charset);
             }
+
+            handlePageDirective(attrs);
         } else if ("taglib".equals(name)) {
             String prefix = attrs.get("prefix");
             String uri = attrs.get("uri");
@@ -302,13 +305,22 @@ public abstract class AbstractParser {
             } else {
                 throw new SyntaxException("Either 'uri' or 'tagdir' must be specified");
             }
+
+            handleTaglibDirective(attrs);
         } else if ("include".equals(name)) {
             String file = attrs.get("file");
             if (file == null) {
                 throw new SyntaxException("The file attribute is required for include directive");
             } else {
+                handleStartIncludeDirective(attrs);
                 handleInclude(file);
+                handleEndIncludeDirective();
             }
+        }
+
+        if ("page".equals(name)) {
+        } else if ("taglib".equals(name)) {
+        } else if ("include".equals(name)) {
         }
     }
 

@@ -55,9 +55,19 @@ public class StreamingParser extends AbstractParser {
     }
 
     @Override
-    protected void handleDirective(String name, Map<String, String> attributes) throws SAXException {
-        System.out.println("directive " + name);
-        HandlerUtil.handleDirective(handler, name, attributes);
+    protected void handleStartIncludeDirective(Map<String, String> attributes) throws SAXException {
+    }
+
+    @Override
+    protected void handleEndIncludeDirective() throws SAXException {
+    }
+
+    @Override
+    protected void handlePageDirective(Map<String, String> attributes) throws SAXException {
+    }
+
+    @Override
+    protected void handleTaglibDirective(Map<String, String> attributes) throws SAXException {
     }
 
     @Override
