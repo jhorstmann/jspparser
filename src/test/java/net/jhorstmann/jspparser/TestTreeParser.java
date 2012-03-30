@@ -28,7 +28,7 @@ public class TestTreeParser {
     public void testParseDirective() throws IOException, SAXException {
         PageDirectiveNode directive = parsePageDirective("<%@page pageEncoding='utf-8' %>");
         Assert.assertNotNull(directive);
-        Map<String, String> attrs = directive.getAttributes();
+        Map<String, String> attrs = directive.getAttributeMap();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
         Assert.assertEquals(Collections.singletonMap("pageEncoding", "utf-8"), attrs);
@@ -38,7 +38,7 @@ public class TestTreeParser {
     public void testParseDirectiveLeadingSpace() throws IOException, SAXException {
         PageDirectiveNode directive = parsePageDirective("<%@ page pageEncoding='utf-8'%>");
         Assert.assertNotNull(directive);
-        Map<String, String> attrs = directive.getAttributes();
+        Map<String, String> attrs = directive.getAttributeMap();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
         Assert.assertEquals(Collections.singletonMap("pageEncoding", "utf-8"), attrs);
@@ -48,7 +48,7 @@ public class TestTreeParser {
     public void testParseDirectiveMultipleAttrs() throws IOException, SAXException {
         PageDirectiveNode directive = parsePageDirective("<%@page pageEncoding='utf-8' info=\"Test\" %>");
         Assert.assertNotNull(directive);
-        Map<String, String> attrs = directive.getAttributes();
+        Map<String, String> attrs = directive.getAttributeMap();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(2, attrs.size());
         HashMap<String, String> expected = new HashMap<String, String>();
@@ -61,7 +61,7 @@ public class TestTreeParser {
     public void testImportDirective() throws IOException, SAXException {
         PageDirectiveNode directive = parsePageDirective("<%@page import='a.A;' %>");
         Assert.assertNotNull(directive);
-        Map<String, String> attrs = directive.getAttributes();
+        Map<String, String> attrs = directive.getAttributeMap();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
         Assert.assertEquals(Collections.singletonMap("import", "a.A;"), attrs);
@@ -71,7 +71,7 @@ public class TestTreeParser {
     public void testImportDirectiveMulti() throws IOException, SAXException {
         PageDirectiveNode directive = parsePageDirective("<%@page import='a.A' import=\"b.B\" %>");
         Assert.assertNotNull(directive);
-        Map<String, String> attrs = directive.getAttributes();
+        Map<String, String> attrs = directive.getAttributeMap();
         Assert.assertNotNull(attrs);
         Assert.assertEquals(1, attrs.size());
         Assert.assertEquals(Collections.singletonMap("import", "a.A,b.B"), attrs);
@@ -91,7 +91,7 @@ public class TestTreeParser {
         TextNode text = (TextNode) children.get(1);
         Assert.assertEquals("\r\n", text.getContent());
         TaglibDirectiveNode taglib = (TaglibDirectiveNode) children.get(2);
-        Map<String, String> attrs = taglib.getAttributes();
+        Map<String, String> attrs = taglib.getAttributeMap();
         Assert.assertEquals(2, attrs.size());
     }
 

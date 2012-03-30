@@ -17,14 +17,14 @@ public abstract class AttributedNode extends Node {
     }
 
     public void addAttribute(String name, String value) {
-        getAttributes().put(name, value);
+        getAttributeMap().put(name, value);
     }
 
     public void addAttributes(Map<String, String> attrs) {
-        getAttributes().putAll(attrs);
+        getAttributeMap().putAll(attrs);
     }
 
-    public Map<String, String> getAttributes() {
+    public Map<String, String> getAttributeMap() {
         if (attributes == null) {
             attributes = new LinkedHashMap<String, String>();
         }
