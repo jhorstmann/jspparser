@@ -31,7 +31,7 @@ public abstract class AttributedNode extends Node {
         return attributes;
     }
 
-    public Attributes getAttributes(boolean convertScriptExpressions) {
+    public static Attributes convertAttributes(Map<String, String> attributes, boolean convertScriptExpressions) {
         AttributesImpl attrs = new AttributesImpl();
         if (attributes != null) {
             for (Map.Entry<String, String> entry : attributes.entrySet()) {
@@ -48,6 +48,10 @@ public abstract class AttributedNode extends Node {
             }
         }
         return attrs;
+    }
+
+    public Attributes getAttributes(boolean convertScriptExpressions) {
+        return convertAttributes(attributes, convertScriptExpressions);
     }
 
     protected Map<String, String> normalizeAttributes() {
