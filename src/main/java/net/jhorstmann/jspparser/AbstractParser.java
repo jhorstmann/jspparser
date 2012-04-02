@@ -40,6 +40,9 @@ public abstract class AbstractParser {
     protected abstract void handleTaglibDirective(Map<String, String> attributes) throws SAXException;
     protected abstract void handleStartIncludeDirective(Map<String, String> attributes) throws SAXException;
     protected abstract void handleEndIncludeDirective() throws SAXException;
+    protected abstract void handleTagDirective(Map<String, String> attributes) throws SAXException;
+    protected abstract void handleAttributeDirective(Map<String, String> attributes) throws SAXException;
+    protected abstract void handleVariableDirective(Map<String, String> attributes) throws SAXException;
 
     protected abstract void handleTaglib(String prefix, String uri) throws SAXException;
 
@@ -268,7 +271,9 @@ public abstract class AbstractParser {
             if ("true".equals(attrs.get("isELIgnored"))) {
                 tokenizer.setIsElEnabled(false);
             } else if ("true".equals(attrs.get("deferredSyntaxAllowedAsLiteral"))) {
+                // TODO
             } else if ("true".equals(attrs.get("trimDirectiveWhitespaces"))) {
+                // TODO
             }
             String pageEncoding = attrs.get("pageEncoding");
             String contentType = attrs.get("contentType");
@@ -316,6 +321,12 @@ public abstract class AbstractParser {
                 handleInclude(file);
                 handleEndIncludeDirective();
             }
+        } else if ("tag".equals(name)) {
+            handleTagDirective(attrs);
+        } else if ("attribute".equals(name)) {
+            handleAttributeDirective(attrs);
+        } else if ("variable".equals(name)) {
+            handleVariableDirective(attrs);
         }
     }
 

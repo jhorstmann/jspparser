@@ -3,19 +3,19 @@ package net.jhorstmann.jspparser.nodes;
 import java.util.Map;
 import org.xml.sax.SAXException;
 
-public class PageDirectiveNode extends AttributedNode implements Directive {
+public class TagDirectiveNode extends AttributedNode implements Directive {
 
-    public PageDirectiveNode(Map<String, String> attributes) {
+    public TagDirectiveNode(Map<String, String> attributes) {
         super(attributes);
     }
 
     @Override
     public String getName() {
-        return "page";
+        return "tag";
     }
 
     @Override
     public void accept(NodeVisitor visitor) throws SAXException {
-        visitor.visitPageDirective(this);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

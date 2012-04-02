@@ -162,6 +162,18 @@ public class StreamingParser extends AbstractParser implements XMLReader {
     }
 
     @Override
+    protected void handleAttributeDirective(Map<String, String> attributes) throws SAXException {
+    }
+
+    @Override
+    protected void handleTagDirective(Map<String, String> attributes) throws SAXException {
+    }
+
+    @Override
+    protected void handleVariableDirective(Map<String, String> attributes) throws SAXException {
+    }
+
+    @Override
     protected void handleStartIncludeDirective(Map<String, String> attributes) throws SAXException {
     }
 

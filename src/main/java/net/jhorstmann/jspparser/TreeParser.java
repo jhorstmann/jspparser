@@ -2,6 +2,7 @@ package net.jhorstmann.jspparser;
 
 import java.util.LinkedList;
 import java.util.Map;
+import net.jhorstmann.jspparser.nodes.AttributeDirectiveNode;
 import net.jhorstmann.jspparser.nodes.CommentNode;
 import net.jhorstmann.jspparser.nodes.CustomTagNode;
 import net.jhorstmann.jspparser.nodes.DeclarationNode;
@@ -14,6 +15,7 @@ import net.jhorstmann.jspparser.nodes.RootNode;
 import net.jhorstmann.jspparser.nodes.ScriptletNode;
 import net.jhorstmann.jspparser.nodes.TaglibDirectiveNode;
 import net.jhorstmann.jspparser.nodes.TextNode;
+import net.jhorstmann.jspparser.nodes.VariableDirectiveNode;
 import org.xml.sax.SAXException;
 
 public class TreeParser extends AbstractParser {
@@ -86,6 +88,24 @@ public class TreeParser extends AbstractParser {
     @Override
     protected void handleTaglibDirective(Map<String, String> attributes) throws SAXException {
         TaglibDirectiveNode directive = new TaglibDirectiveNode(attributes);
+        topNode().addChildNode(directive);
+    }
+
+    @Override
+    protected void handleAttributeDirective(Map<String, String> attributes) throws SAXException {
+        AttributeDirectiveNode directive = new AttributeDirectiveNode(attributes);
+        topNode().addChildNode(directive);
+    }
+
+    @Override
+    protected void handleTagDirective(Map<String, String> attributes) throws SAXException {
+        TaglibDirectiveNode directive = new TaglibDirectiveNode(attributes);
+        topNode().addChildNode(directive);
+    }
+
+    @Override
+    protected void handleVariableDirective(Map<String, String> attributes) throws SAXException {
+        VariableDirectiveNode directive = new VariableDirectiveNode(attributes);
         topNode().addChildNode(directive);
     }
 
