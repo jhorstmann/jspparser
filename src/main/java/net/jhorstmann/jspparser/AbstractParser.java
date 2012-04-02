@@ -317,11 +317,6 @@ public abstract class AbstractParser {
                 handleEndIncludeDirective();
             }
         }
-
-        if ("page".equals(name)) {
-        } else if ("taglib".equals(name)) {
-        } else if ("include".equals(name)) {
-        }
     }
 
     public void parseCustomTagOrText() throws IOException, SAXException {
