@@ -1,6 +1,7 @@
 package net.jhorstmann.jspparser;
 
 import java.io.CharArrayReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -66,7 +67,7 @@ import java.io.Reader;
     public void skipRequiredSpace() throws IOException {
         int ch = read();
         if (!isSpace(ch)) {
-            throw new IllegalStateException();
+            throw new SyntaxException("Expected white space character");
         }
         skipOptionalSpace();
     }

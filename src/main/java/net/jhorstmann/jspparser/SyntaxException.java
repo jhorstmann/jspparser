@@ -1,6 +1,8 @@
 package net.jhorstmann.jspparser;
 
-public class SyntaxException extends RuntimeException {
+import java.io.IOException;
+
+public class SyntaxException extends IOException {
 
     public SyntaxException(String message) {
         super(message);

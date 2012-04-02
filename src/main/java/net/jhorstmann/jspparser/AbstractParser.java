@@ -153,7 +153,7 @@ public abstract class AbstractParser {
                 attributes.put(name, value);
             }
         } else {
-            throw new IllegalStateException();
+            throw new SyntaxException("Expected tag attribute");
         }
     }
 
@@ -183,7 +183,7 @@ public abstract class AbstractParser {
                 attributes.put(name, value);
             }
         } else {
-            throw new IllegalStateException();
+            throw new SyntaxException("Expected directive attribute");
         }
     }
 

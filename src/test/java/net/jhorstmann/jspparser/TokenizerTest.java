@@ -1,5 +1,6 @@
 package net.jhorstmann.jspparser;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.StringReader;
 import org.junit.Assert;
