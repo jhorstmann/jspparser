@@ -1,6 +1,5 @@
 package net.jhorstmann.jspparser;
 
-import java.util.Collections;
 import java.util.Map;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -17,10 +16,14 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 
 public class StreamingParser extends AbstractParser implements XMLReader {
+    public static final String FEATURE_NAMESPACES = "http://xml.org/sax/features/namespaces";
+    public static final String FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    public static final String FEATURE_WRAP_TEXT = "http://jhorstmann.net/jspparser/feature-wrap-text";
 
     private ContentHandler handler;
     private EntityResolver resolver;
     private LexicalHandler lexicalHandler;
+    private boolean wrapText;
 
     public StreamingParser(ContentHandler handler) {
         this.handler = handler;
@@ -79,10 +82,12 @@ public class StreamingParser extends AbstractParser implements XMLReader {
 
     @Override
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
+        if (FEATURE_NAMESPACES.equals(name)) {
             return true;
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
+        } else if (FEATURE_NAMESPACE_PREFIXES.equals(name)) {
             return false;
+        } else if (FEATURE_WRAP_TEXT.equals(name)) {
+            return wrapText;
         } else {
             throw new SAXNotRecognizedException("Feature " + name);
         }
@@ -90,14 +95,16 @@ public class StreamingParser extends AbstractParser implements XMLReader {
 
     @Override
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
+        if (FEATURE_NAMESPACES.equals(name)) {
             if (!value) {
                 throw new SAXNotSupportedException();
             }
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
+        } else if (FEATURE_NAMESPACE_PREFIXES.equals(name)) {
             if (value) {
                 throw new SAXNotSupportedException();
             }
+        } else if (FEATURE_WRAP_TEXT.equals(name)) {
+            this.wrapText = value;
         } else {
             throw new SAXNotRecognizedException("Feature " + name);
         }
@@ -207,9 +214,13 @@ public class StreamingParser extends AbstractParser implements XMLReader {
 
     @Override
     protected void handleText(String text) throws SAXException {
-        //handler.startElement(NSURI_JSP, "text", PREFIX_JSP + ":text", EMPTY_ATTRS);
+        if (wrapText) {
+            handler.startElement(NSURI_JSP, "text", PREFIX_JSP + ":text", EMPTY_ATTRS);
+        }
         handleCharacters(text);
-        //handler.endElement(NSURI_JSP, "text", PREFIX_JSP + ":text");
+        if (wrapText) {
+            handler.endElement(NSURI_JSP, "text", PREFIX_JSP + ":text");
+        }
     }
 
     @Override
