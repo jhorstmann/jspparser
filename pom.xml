@@ -15,6 +15,17 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Jörn Horstmann</name>
+            <email>joern@jhorstmann.net</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:jhorstmann/jspparser.git</connection>
+        <developerConnection>scm:git:git@github.com:jhorstmann/jspparser.git</developerConnection>
+        <url>git@github.com:jhorstmann/jspparser.git</url>
+    </scm>
     <build>
         <plugins>
             <plugin>
