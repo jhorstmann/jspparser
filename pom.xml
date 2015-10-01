@@ -5,6 +5,9 @@
     <artifactId>jspparser</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>jspparser</name>
+    <description>A standalone jsp parser</description>
+    <url>https://github.com/jhorstmann/jspparser</url>
     <prerequisites>
         <maven>3.0.4</maven>
     </prerequisites>
